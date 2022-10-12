@@ -1,12 +1,12 @@
 package ru.efremov.cryptoapp.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_coin_price_list.*
 import ru.efremov.cryptoapp.R
-import ru.efremov.cryptoapp.data.model.CoinPriceInfo
+import ru.efremov.cryptoapp.domain.CoinInfo
 import ru.efremov.cryptoapp.presentation.adapters.CoinInfoAdapter
 
 class CoinPriceListActivity : AppCompatActivity() {
@@ -19,7 +19,7 @@ class CoinPriceListActivity : AppCompatActivity() {
 
         val adapter = CoinInfoAdapter(this)
         adapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
-            override fun onCoinClick(coinPriceInfo: CoinPriceInfo) {
+            override fun onCoinClick(coinPriceInfo: CoinInfo) {
                 val intent = CoinDetailActivity.newIntent(
                     this@CoinPriceListActivity,
                     coinPriceInfo.fromSymbol
@@ -29,8 +29,8 @@ class CoinPriceListActivity : AppCompatActivity() {
         }
         rvCoinPriceList.adapter = adapter
         viewModel = ViewModelProvider(this)[CoinViewModel::class.java]
-        viewModel.priceList.observe(this, Observer {
+        viewModel.coinInfoList.observe(this) {
             adapter.coinInfoList = it
-        })
+        }
     }
 }

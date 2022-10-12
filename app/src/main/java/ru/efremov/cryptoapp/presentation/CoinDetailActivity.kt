@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_coin_detail.*
 import ru.efremov.cryptoapp.R
+import ru.efremov.cryptoapp.data.network.ApiFactory.BASE_IMAGE_URL
+import ru.efremov.cryptoapp.utils.convertTimestampToTime
 
 class CoinDetailActivity : AppCompatActivity() {
 
@@ -23,22 +25,23 @@ class CoinDetailActivity : AppCompatActivity() {
             return
         }
 
-        val fromSymbol = intent.getStringExtra(EXTRA_FROM_SYMBOL)
+        val fromSymbol = intent.getStringExtra(EXTRA_FROM_SYMBOL) ?: EMPTY_SYMBOL
         viewModel = ViewModelProvider(this)[CoinViewModel::class.java]
-        viewModel.getDetailInfo(fromSymbol!!).observe(this, Observer {
+        viewModel.getDetailInfo(fromSymbol).observe(this) {
             tvPrice.text = it.price
             tvMinPrice.text = it.lowDay
             tvMaxPrice.text = it.highDay
             tvLastMarket.text = it.lastMarket
-            tvLastUpdate.text = it.getFormattedTime()
+            tvLastUpdate.text = convertTimestampToTime(it.lastUpdate)
             tvFromSymbol.text = it.fromSymbol
             tvToSymbol.text = it.toSymbol
-            Picasso.get().load(it.getFullImageUrl()).into(ivLogoCoin)
-        })
+            Picasso.get().load(BASE_IMAGE_URL + it.imageUrl).into(ivLogoCoin)
+        }
     }
 
     companion object {
         private const val EXTRA_FROM_SYMBOL = "fSym"
+        private const val EMPTY_SYMBOL = ""
 
         fun newIntent(context: Context, fromSymbol: String): Intent {
             val intent = Intent(context, CoinDetailActivity::class.java)
