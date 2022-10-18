@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import com.squareup.picasso.Picasso
 import ru.efremov.cryptoapp.R
 import ru.efremov.cryptoapp.databinding.ActivityCoinDetailBinding
 
@@ -29,6 +27,7 @@ class CoinDetailActivity : AppCompatActivity() {
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_container, CoinDetailFragment.newInstance(fromSymbol))
+                .addToBackStack(null)
                 .commit()
         }
     }

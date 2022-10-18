@@ -1,17 +1,12 @@
 package ru.efremov.cryptoapp.presentation
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_coin_detail.*
-import ru.efremov.cryptoapp.databinding.ActivityCoinDetailBinding
 import ru.efremov.cryptoapp.databinding.FragmentCoinDetailBinding
 
 class CoinDetailFragment : Fragment() {
