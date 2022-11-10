@@ -10,23 +10,22 @@ import ru.efremov.cryptoapp.data.local.AppDatabase
 import ru.efremov.cryptoapp.data.local.CoinInfoDao
 import ru.efremov.cryptoapp.data.mapper.CoinMapper
 import ru.efremov.cryptoapp.data.network.ApiFactory
+import ru.efremov.cryptoapp.data.network.ApiService
 
 class RefreshDataWorker(
     context: Context,
-    workerParameters: WorkerParameters
+    workerParameters: WorkerParameters,
+    private val coinInfoDao: CoinInfoDao,
+    private val apiService: ApiService,
+    private val mapper: CoinMapper
 ): CoroutineWorker(context, workerParameters) {
-
-    private val coinInfoDao: CoinInfoDao = AppDatabase.getInstance(context).coinPriceInfoDao()
-    private val service = ApiFactory.apiService
-
-    private val mapper = CoinMapper()
 
     override suspend fun doWork(): Result {
         while (true) {
             try {
-                val topCoins = service.getTopCoinsInfo(limit = 50)
+                val topCoins = apiService.getTopCoinsInfo(limit = 50)
                 val fSyms = mapper.mapNamesListToString(topCoins)
-                val jsonContainer = service.getFullPriceList(fSyms = fSyms)
+                val jsonContainer = apiService.getFullPriceList(fSyms = fSyms)
                 val coinInfoDtoList = mapper.mapJsonContainerToListCoinInfo(jsonContainer)
                 val dbModelList = coinInfoDtoList.map { mapper.mapDtoToDbModel(it) }
                 coinInfoDao.insertPriceList(dbModelList)
