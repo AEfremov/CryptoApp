@@ -1,8 +1,9 @@
 package ru.efremov.cryptoapp.domain
 
 import androidx.lifecycle.LiveData
+import javax.inject.Inject
 
-class GetCoinInfoUseCase(
+class GetCoinInfoUseCase @Inject constructor(
     private val repository: CoinRepository
 ) {
 

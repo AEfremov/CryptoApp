@@ -3,6 +3,7 @@ package ru.efremov.cryptoapp.data.repository
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.viewpager.widget.PagerTitleStrip
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
 import ru.efremov.cryptoapp.data.local.AppDatabase
@@ -11,14 +12,13 @@ import ru.efremov.cryptoapp.data.mapper.CoinMapper
 import ru.efremov.cryptoapp.domain.CoinInfo
 import ru.efremov.cryptoapp.domain.CoinRepository
 import ru.efremov.cryptoapp.workers.RefreshDataWorker
+import javax.inject.Inject
 
-class CoinRepositoryImpl(
+class CoinRepositoryImpl @Inject constructor(
+    private val mapper: CoinMapper,
+    private val coinInfoDao: CoinInfoDao,
     private val application: Application
 ): CoinRepository {
-
-    private val coinInfoDao: CoinInfoDao = AppDatabase.getInstance(application).coinPriceInfoDao()
-
-    private val mapper = CoinMapper()
 
     override fun getCoinInfoList(): LiveData<List<CoinInfo>> {
         return Transformations.map(coinInfoDao.getPriceList()) {
