@@ -7,8 +7,9 @@ import androidx.work.WorkerParameters
 import ru.efremov.cryptoapp.data.local.CoinInfoDao
 import ru.efremov.cryptoapp.data.mapper.CoinMapper
 import ru.efremov.cryptoapp.data.network.ApiService
+import javax.inject.Inject
 
-class RefreshDataWorkerFactory(
+class RefreshDataWorkerFactory @Inject constructor(
     private val coinInfoDao: CoinInfoDao,
     private val apiService: ApiService,
     private val mapper: CoinMapper
