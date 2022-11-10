@@ -11,7 +11,8 @@ import ru.efremov.cryptoapp.presentation.CoinPriceListActivity
 @Component(
     modules = [
         DataModule::class,
-        ViewModelModule::class
+        ViewModelModule::class,
+        WorkerModule::class
     ]
 )
 interface ApplicationComponent {
